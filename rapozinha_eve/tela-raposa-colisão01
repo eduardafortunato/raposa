@@ -1,0 +1,74 @@
+import pygame
+from pygame.transform import rotozoom
+# Carregar a imagem da tela de fundo 1
+imagem_fundo1 = pygame.image.load("fundo1.png")
+# Carregar a imagem da tela de fundo 2
+imagem_fundo2 = pygame.image.load("fundo2.png")
+# Carregar a imagem do personagem
+imagem_personagem = pygame.image.load("personagem.png")
+largura_janela=1920
+altura_janela=1080
+personagem_x = tela_largura // 2
+personagem_y = tela_altura // 2
+velocidade = 5
+angulo = 0
+velocidade_rotacao = 0.1
+direcao = "direita"
+lista_paredes = [
+    # Exemplo de paredes (altere de acordo com o seu jogo)
+    pygame.Rect(100, 100, 200, 50),
+    pygame.Rect(500, 300, 150, 200),
+]
+cor_parede = (0, 0, 255)  # Azul
+rodando = True
+while rodando:
+    # Verificar eventos
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            rodando = False
+
+    # Controle do personagem
+    teclas = pygame.key.get_pressed()
+    if teclas[pygame.K_LEFT]:
+        direcao = "esquerda"
+    if teclas[pygame.K_RIGHT]:
+        direcao = "direita"
+    if teclas[pygame.K_UP]:
+        direcao = "cima"
+    if teclas[pygame.K_DOWN]:
+        direcao = "baixo"
+
+    # Atualizar posição do personagem
+    if direcao == "esquerda":
+        personagem_x -= velocidade
+    elif direcao == "direita":
+        personagem_x += velocidade
+    elif direcao == "cima":
+        personagem_y -= velocidade
+    elif direcao == "baixo":
+        personagem_y += velocidade
+
+    # Limitar a posição do personagem na tela
+    personagem_x = max(0, min(personagem_x, tela_largura - 32))
+    personagem_y = max(0, min(personagem_y, tela_altura - 32))
+
+    # Detectar colisão com paredes
+    colisao = False
+    for parede in lista_paredes:
+        if personagem_x < parede.right and personagem_x + 32 > parede.left and \
+           personagem_y < parede.bottom and personagem_y + 32 > parede.top:
+            colisao = True
+            break
+
+    # Mudar direção caso haja colisão
+    if colisao:
+        if direcao == "esquerda":
+            personagem_x += velocidade
+            direcao = "direita"
+        elif direcao == "direita":
+            personagem_x -= velocidade
+            direcao = "esquerda"
+        elif direcao == "cima":
+
+# Finalizar Pygame
+pygame.quit()
