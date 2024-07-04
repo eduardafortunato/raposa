@@ -1,0 +1,85 @@
+
+#Título: Inimigos movimentos randômicos e game over
+#link do material da aula: https://bit.ly/pythontela01
+#saiba mais: comentários do autor - https://vemfazermatematicaegames.blogspot.com/2020/05/pygames-construindo-inimigos-com.html
+
+import pygame, sys
+import math
+import random
+import time
+
+pygame.init()
+
+largura_janela = 1920   
+altura_janela = 1080
+pygame.display.set_caption('jogo da galinha')
+clock = pygame.time.Clock()
+
+fgExit = False
+
+
+cenario = pygame.image.load('Untitled_Artwork 2.png')
+cenario2= pygame.image.load('Untitled_Artwork.png')
+personagem= pygame.image.load('Untitled_Artwork (2).png')
+personagemup= pygame.image.load('Untitled_Artwork (1).png')
+personagemdo= pygame.image.load('Untitled_Artwork (3).png')
+personagemle= pygame.image.load('Untitled_Artwork (4).png')
+personagemri= pygame.image.load('Untitled_Artwork (2).png')
+
+tela = pygame.display.set_mode((largura_janela, altura_janela))
+x = (largura_janela * 0.1)
+y = (altura_janela * 0.5)#posiöäao do personagem
+x1 = 0
+x2 = 0
+y1 = 0
+y2 = 0
+xcenario = 0
+ycenario = 0
+
+def colidiu():
+    if estado_personagemin == 1:#necessario para o personagem sumir
+        distancia =  math.sqrt(math.pow(x-xcenario,2)+math.pow(y-ycenario,2))
+        print (distancia)
+        if distancia<128+50:
+             return True
+        else:
+             return False
+
+
+while not fgExit:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            fgExit = True
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                x1 = 0
+            if event.key == pygame.K_RIGHT:
+                x2 = 0
+            if event.key == pygame.K_UP:
+                y1 = 0
+            if event.key == pygame.K_DOWN:
+                y2 = 0
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                x1 = -5
+                personagem = personagemle
+            if event.key == pygame.K_RIGHT:
+                x2 = 5
+                personagem = personagemri
+            if event.key == pygame.K_UP:
+                y1 = -5
+                personagem = personagemup
+            if event.key == pygame.K_DOWN:
+                y2 = 5
+                personagem = personagemdo #personagem se mexe pra direção da tecla 
+
+    x += x1 + x2
+    y += y1 + y2
+   
+    tela.blit(cenario,(xcenario,ycenario))
+    tela.blit(cenario2,(0,0))
+    tela.blit(personagem, (x,y))
+    pygame.display.update()
+    clock.tick(60)
+
+pygame.quit()

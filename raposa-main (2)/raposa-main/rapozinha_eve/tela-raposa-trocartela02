@@ -1,0 +1,60 @@
+import pygame
+from pygame.transform import rotozoom
+# Carregar a imagem da tela de fundo 1
+imagem_fundo1 = pygame.image.load("fundo1.png")
+# Carregar a imagem da tela de fundo 2
+imagem_fundo2 = pygame.image.load("fundo2.png")
+
+largura_janela=1920
+altura_janela=1080
+personagem_x = tela_largura // 2
+personagem_y = tela_altura // 2
+velocidade = 5
+angulo = 0
+velocidade_rotacao = 0.1
+rodando = True
+
+while rodando:
+    # Verificar eventos
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            rodando = False
+
+    # Controle do personagem
+    teclas = pygame.key.get_pressed()
+    if teclas[pygame.K_LEFT]:
+        personagem_x -= velocidade
+    if teclas[pygame.K_RIGHT]:
+        personagem_x += velocidade
+    if teclas[pygame.K_UP]:
+        personagem_y -= velocidade
+    if teclas[pygame.K_DOWN]:
+        personagem_y += velocidade
+
+    # Limitar a posição do personagem na tela
+    personagem_x = max(0, min(personagem_x, tela_largura - 32))
+    personagem_y = max(0, min(personagem_y, tela_altura - 32))
+
+    # Trocar de tela de fundo
+    if personagem_x == 0 or personagem_x == tela_largura - 32:
+        imagem_fundo = imagem_fundo2  # Trocar para a segunda imagem
+    else:
+        imagem_fundo = imagem_fundo1  # Trocar para a primeira imagem
+
+    # Atualizar ângulo de rotação
+    angulo += velocidade_rotacao
+
+    # Rotar e redimensionar a imagem
+    imagem_fundo_rotada = rotozoom(imagem_fundo, angulo, 1)  # Ajustar escala se necessário
+
+    # Desenhar a imagem de fundo na tela
+    tela.blit(imagem_fundo_rotada, (0, 0))
+
+    # Desenhar o personagem
+    pygame.draw.rect(tela, (0, 0, 255), (personagem_x, personagem_y, 32, 32))
+
+    # Atualizar a tela
+    pygame.display.flip()
+
+# Finalizar Pygame
+pygame.quit()
