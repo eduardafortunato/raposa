@@ -1,0 +1,58 @@
+import pygame
+import random
+
+pygame.init()
+
+# Configurações da janela
+largura, altura = 800, 600
+tela = pygame.display.set_mode((largura, altura))
+pygame.display.set_caption("Arrastando Imagens")
+
+# Carregar as imagens (ajuste os caminhos)
+imagens = []
+for i in range(1, 7):
+    imagem_path = f"Livro{i}.png"
+    imagem = pygame.image.load(imagem_path)
+    imagens.append(imagem)
+
+# Criar uma lista de retângulos para representar as posições das imagens
+retangulos = []
+for imagem in imagens:
+    retangulo = imagem.get_rect()
+    retangulo.x = random.randint(0, largura - retangulo.width)
+    retangulo.y = random.randint(0, altura - retangulo.height)
+    retangulos.append(retangulo)
+
+# Variáveis para controlar o arrastamento
+arrastando = False
+indice_imagem = None
+
+rodando = True
+while rodando:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            rodando = False
+        elif evento.type == pygame.MOUSEBUTTONDOWN:
+            for i, retangulo in enumerate(retangulos):
+                if retangulo.collidepoint(evento.pos):
+                    arrastando = True
+                    indice_imagem = i
+                    mouse_x, mouse_y = evento.pos
+                    offset_x = retangulo.x - mouse_x
+                    offset_y = retangulo.y - mouse_y
+        elif evento.type == pygame.MOUSEBUTTONUP:
+            arrastando = False
+            indice_imagem = None
+        elif evento.type == pygame.MOUSEMOTION:
+            if arrastando:
+                mouse_x, mouse_y = evento.pos
+                retangulos[indice_imagem].x = mouse_x + offset_x
+                retangulos[indice_imagem].y = mouse_y + offset_y
+
+    # Desenhando
+    tela.fill((255, 255, 255))
+    for i, retangulo in enumerate(retangulos):
+        tela.blit(imagens[i], retangulo)
+    pygame.display.flip()
+
+pygame.quit()
