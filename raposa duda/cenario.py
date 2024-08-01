@@ -1,3 +1,8 @@
+
+#Título: Inimigos movimentos randômicos e game over
+#link do material da aula: https://bit.ly/pythontela01
+#saiba mais: comentários do autor - https://vemfazermatematicaegames.blogspot.com/2020/05/pygames-construindo-inimigos-com.html
+
 import pygame, sys
 import math
 import random
@@ -12,8 +17,9 @@ clock = pygame.time.Clock()
 
 fgExit = False
 
+
 menu = pygame.image.load('menu.PNG')
-cenario = pygame.image.load('cenario.png')
+cenario= pygame.image.load('cenario.png')
 personagem= pygame.image.load('Untitled_Artwork (2).png')
 personagemup= pygame.image.load('Untitled_Artwork (1).png')
 personagemdo= pygame.image.load('Untitled_Artwork (3).png')
@@ -27,8 +33,10 @@ x1 = 0
 x2 = 0
 y1 = 0
 y2 = 0
+xcenario = 0
+ycenario = 0
 
-
+#def trocadetela(): pesquisar
 
 while not fgExit:
     for event in pygame.event.get():
@@ -60,7 +68,8 @@ while not fgExit:
     x += x1 + x2
     y += y1 + y2
    
-    tela.blit(menu,())
+    tela.blit(cenario,(xcenario,ycenario))
+    tela.blit(menu,(0,0))
     tela.blit(personagem, (x,y))
     pygame.display.update()
     clock.tick(60)
